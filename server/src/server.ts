@@ -1,7 +1,8 @@
-import express from"express";
+import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./config/db.js";
+import authRoutes from "./routes/auth.route.js";
 
 dotenv.config();
 
@@ -17,16 +18,19 @@ app.use(
     })
 );
 
-
 app.use(express.json());
 
-app.get("/api/health", async (_req,res) => {
-    try{const result = await pool.query("SELECT NOW()");
-    res.json({
-        message: "Test2Dev is running",
-        databaseTime: result.rows[0].now, 
-    })}
-    catch(error){
+app.use("/api/auth", authRoutes);
+
+app.get("/api/health", async (_req, res) => {
+    try {
+        const result = await pool.query("SELECT NOW()");
+
+        res.json({
+            message: "Test2Dev is running",
+            databaseTime: result.rows[0].now,
+        });
+    } catch (error) {
         console.error("Database connection failed:", error);
 
         res.status(500).json({
@@ -35,6 +39,6 @@ app.get("/api/health", async (_req,res) => {
     }
 });
 
-app.listen(PORT, () =>{
+app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-})
+});
