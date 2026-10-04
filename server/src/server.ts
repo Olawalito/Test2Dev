@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./config/db.js";
 import authRoutes from "./routes/auth.route.js";
-import testRoutes from "./routes/test.route.js"
+import testRoutes from "./routes/test.route.js";
+import projectRoutes from "./routes/project.route.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/test", testRoutes);
+app.use("/api/projects", projectRoutes);
 
 
 app.get("/api/health", async (_req, res) => {
